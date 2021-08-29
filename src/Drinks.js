@@ -1,3 +1,4 @@
+import React from "react";
 const drinkOptions = [
     {
         drinkImage: "assets/img/coca.png",
@@ -54,16 +55,47 @@ function Drink(props) {
         drinkPrice
     } = props;
 
+    const [selected , setSelected ] = React.useState("");
+    const [count, setCount] = React.useState(0);
+
+
+    function select() {
+        if (selected  === "") {
+            setSelected ("selected");
+            add();
+         
+        } 
+    }
+
+    function add() {
+        setCount(count + 1);
+    }
+    function decrement() {
+        setCount(count - 1);
+        if (count === 1) {
+            setSelected ("");
+        }
+    }
+
+
     return (
-        <div>
+        <div className={`${selected}`} onClick={select}>
             <img src={drinkImage} alt="Latas de Coca-Cola" />
             <div className="informacao-opcao">
                 <h3 className="nome-da-opcao">{drinkName}</h3>
                 <p className="descricao-opcao">{drinkInfo}</p>
                 <p className="valor">{drinkPrice}</p>
                 <div className="check">
-                    <ion-icon name="checkmark-circle-sharp"></ion-icon>
-                </div>       
+                    <div className="decrement">
+                        <ion-icon name="remove" onClick={decrement}></ion-icon>
+                    </div>                    
+                    <div>
+                        {count}
+                    </div>
+                    <div className="add">
+                        <ion-icon name="add" onClick={add}></ion-icon>
+                    </div>
+                </div>        
             </div>                
         </div>
     );

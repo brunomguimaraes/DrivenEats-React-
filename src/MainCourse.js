@@ -1,4 +1,4 @@
-
+import React from "react";
 const mainCourseOptions = [
     {
         mainCourseImage: "assets/img/frango.png",
@@ -66,16 +66,45 @@ function Dish(props) {
         mainCoursePrice
     } = props;
 
+    const [selected , setSelected ] = React.useState("");
+    const [count, setCount] = React.useState(0);
 
+
+    function select() {
+        if (selected  === "") {
+            setSelected ("selected");
+            add();
+         
+        } 
+    }
+
+    function add() {
+        setCount(count + 1);
+    }
+    function decrement() {
+        setCount(count - 1);
+        if (count === 1) {
+            setSelected ("");
+        }
+    }
+ 
     return (
-        <div>
+        <div className={`${selected}`} onClick={select}>
             <img src={mainCourseImage} alt="Prato de Frango Yin Yang" />
             <div className="informacao-opcao">
                 <h3 className="nome-da-opcao">{mainCourseName}</h3>
                 <p className="descricao-opcao">{mainCourseInfo1}<br/>{mainCourseInfo2}</p>
                 <p className="valor">{mainCoursePrice}</p>
                 <div className="check">
-                    <ion-icon name="checkmark-circle-sharp"></ion-icon>
+                    <div className="decrement">
+                        <ion-icon name="remove" onClick={decrement}></ion-icon>
+                    </div>                    
+                    <div>
+                        {count}
+                    </div>
+                    <div className="add">
+                        <ion-icon name="add" onClick={add}></ion-icon>
+                    </div>
                 </div>   
             </div>
         </div>
