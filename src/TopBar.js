@@ -1,10 +1,9 @@
-export default function TopBar() {
+export default function TopBar () {
+
     return (
-        <div className="top-bar">
-            <div>
-                <h1>DrivenEats</h1>
-                <p>Sua comida em 6 minutos</p>
-            </div>
+        <div className="topo">
+            <p className="titulo">DrivenEats</p>
+            <p className="subtitulo roboto400">Sua comida pronta em 6 minutos</p>
         </div>
-    );
+    )
 }

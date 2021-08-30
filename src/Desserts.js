@@ -1,105 +1,67 @@
 import React from "react";
-const dessertOptions = [
-    {
-        dessertImage: "assets/img/pudim.png",
-        dessertName: "Pudim",
-        dessertInfo: "Um pouco de batata,",
-        dessertPrice: "R$ 15,90"
-    },
-    {
-        dessertImage: "assets/img/bolo_de_chocolate.jpg",
-        dessertName: "Bolo de Chocolate",
-        dessertInfo: "Um pouco de batata,",
-        dessertPrice: "R$ 15,90"
-    },
-    {
-        dessertImage: "assets/img/creme_de_cupuacu.jpeg",
-        dessertName: "Creme de Cupuaçu",
-        dessertInfo: "Um pouco de batata,",
-        dessertPrice: "R$ 15,90"
-    },
-    {
-        dessertImage: "assets/img/salada_de_frutas.jpg",
-        dessertName: "Salada de Frutas",
-        dessertInfo: "Um pouco de batata,",
-        dessertPrice: "R$ 15,90"
-    },
-    {
-        dessertImage: "assets/img/cremoso.jpg",
-        dessertName: "Açaí Cremoso",
-        dessertInfo: "Um pouco de batata,",
-        dessertPrice: "R$ 15,90"
-    },
-    {
-        dessertImage: "assets/img/bolo_de_coco.jpeg",
-        dessertName: "Bolo de Coco",
-        dessertInfo: "Um pouco de batata,",
-        dessertPrice: "R$ 15,90"
-    },
 
-]
+export default function Desserts ({desserts, ativar}) {
 
-
-export default function Desserts() {
     return (
-        <div className="desserts">
-            {dessertOptions.map((dessert, index) => (<Dessert key={index} dessertImage = {dessert.dessertImage} dessertName = {dessert.dessertName} dessertInfo = {dessert.dessertInfo} dessertPrice = {dessert.dessertPrice} />))}
+        <div className="sobremesas">
+            {desserts.map((dessert, index) => <Dessert key={index} dessert={dessert} ativar={ativar}/>)}
         </div>
-    );
+    )
 }
 
+function Dessert ({dessert, ativar}) {
+  const [selecionada, setSelecionada] = React.useState("");
+  const [aparecer, setAparecer] = React.useState("none");
+  const [contador, setContador] = React.useState(0);
 
-function Dessert(props) {
-    const {
-        dessertImage,
-        dessertName,
-        dessertInfo,
-        dessertPrice
-    } = props;
+  function selecionar () {
 
-    const [selected , setSelected ] = React.useState("");
-
-    const [count, setCount] = React.useState(0);
-
-
-    function select() {
-        if (selected  === "") {
-            setSelected ("selected");
-            add();
-         
-        } 
+    if(selecionada === ""){
+      setSelecionada("selecionado");
+      setAparecer("");
+      plus();
+      ativar();
     }
-
-    function add() {
-        setCount(count + 1);
+  }
+  function deselecionar () {
+    setSelecionada("");
+    setAparecer("none");
+    dessert.qtd = 0;
+  }
+  function plus () {
+      setContador(contador + 1);
+      dessert.qtd += 1;
+      ativar();
+  }
+  function diminuir () {
+    if(dessert.qtd === 1){
+      deselecionar();
+      setContador(() => contador - 1);
+      dessert.qtd = 0;
     }
-    function decrement() {
-        setCount(count - 1);
-        if (count === 1) {
-            setSelected ("");
-        }
+    else if(dessert.qtd > 0){
+      setContador(() => contador - 1);
+      dessert.qtd -= 1;
     }
-
-
+    ativar();
+  }
     return (
-        <div className={`${selected}`} onClick={select}> 
-            <img src={dessertImage} alt="Pudim" />
-            <div className="informacao-opcao"> 
-                <h3 className="nome-da-opcao">{dessertName}</h3>
-                <p className="descricao-opcao">{dessertInfo}</p>
-                <p className="valor">{dessertPrice}</p>
-                <div className="check">
-                    <div className="decrement">
-                        <ion-icon name="remove" onClick={decrement}></ion-icon>
-                    </div>                    
-                    <div>
-                        {count}
+        <div className={`sobremesa ${selecionada}`} onClick={selecionar}>
+                <img src={dessert.img} alt="imagem-da-sobremesa"/>
+                <div className="informacoes">
+                    <p className="nome-produto">{dessert.nome}</p>
+                    <p className="descricao-produto">{dessert.descricao}</p>
+                    <p className="preco">R$ {dessert.preco}</p>
+                    <div className={`operations ${aparecer}`}> 
+                      <div className="diminuir">
+                        <ion-icon onClick={diminuir}  name="remove-sharp"></ion-icon>
+                      </div>             
+                      <span className="contador">{contador}</span>
+                      <div className="plus">
+                        <ion-icon onClick={plus} name="add-outline"></ion-icon>
+                      </div> 
                     </div>
-                    <div className="add">
-                        <ion-icon name="add" onClick={add}></ion-icon>
-                    </div>
-                </div>                  
-            </div>
+                </div>
         </div>
-    );
+    )
 }
